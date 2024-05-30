@@ -71,6 +71,7 @@ const RegistrationForm = () => {
                         <input
                             type="text"
                             name="username"
+                            data-cy="username"
                             value={formData.username}
                             onChange={handleChange}
                             className='form-control border border-success rounded'
@@ -85,6 +86,7 @@ const RegistrationForm = () => {
                         <input
                             type="email"
                             name="email"
+                            data-cy="email"
                             value={formData.email}
                             onChange={handleChange}
                             className='form-control border border-success rounded'
@@ -99,6 +101,7 @@ const RegistrationForm = () => {
                         <input
                             type="password"
                             name="password"
+                            data-cy="password"
                             value={formData.password}
                             onChange={handleChange}
                             className='form-control border border-success rounded'
@@ -113,6 +116,7 @@ const RegistrationForm = () => {
                         <input
                             type="date"
                             name="dob"
+                            data-cy="date-of-birth"
                             value={formData.dob}
                             onChange={handleChange}
                             className='form-control border border-success rounded'
@@ -123,12 +127,18 @@ const RegistrationForm = () => {
 
                 <div className="row">
                     <div className="col">
-                        <button type="submit" className='btn btn-success float-end'>Submit</button>
+                        <button
+                            type="submit"
+                            className='btn btn-success float-end'
+                            data-cy="submit"
+                        >
+                            Submit
+                        </button>
                     </div>
                 </div>
             </form>
             {submitted && (
-                <div className="submitted-info">
+                <div className="submitted-info" data-cy="submitted-info">
                     <h3>Submitted Information:</h3>
                     <p><strong>Username:</strong> {formData.username}</p>
                     <p><strong>Email:</strong> {formData.email}</p>
