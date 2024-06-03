@@ -35,10 +35,23 @@ const RegistrationForm = () => {
         }
         if (!formData.dob) {
             formErrors.dob = "Date of Birth is required";
-        } else if (isNaN(new Date(formData.dob).getTime())) {
+        } else if (!isValidDate(formData.dob)) {
             formErrors.dob = "Date of Birth is invalid";
         }
         return formErrors;
+    };
+
+    const isValidDate = (dateString) => {
+        // Check if the date is in YYYY-MM-DD format
+        const regex = /^\d{4}-\d{2}-\d{2}$/;
+        if (!regex.test(dateString)) {
+            return false;
+        }
+
+        const date = new Date(dateString);
+        // Ensure the date components are correct
+        const [year, month, day] = dateString.split('-').map(Number);
+        return date.getFullYear() === year && date.getMonth() + 1 === month && date.getDate() === day;
     };
 
     const calculateAge = (dob) => {
@@ -84,7 +97,7 @@ const RegistrationForm = () => {
                     <div className='input-group mb-1'>
                         <label className="col-3">Email:</label>
                         <input
-                            type="email"
+                            type="text"
                             name="email"
                             data-cy="email"
                             value={formData.email}
@@ -140,10 +153,22 @@ const RegistrationForm = () => {
             {submitted && (
                 <div className="submitted-info" data-cy="submitted-info">
                     <h3>Submitted Information:</h3>
-                    <p><strong>Username:</strong> {formData.username}</p>
-                    <p><strong>Email:</strong> {formData.email}</p>
-                    <p><strong>Date of Birth:</strong> {formData.dob}</p>
-                    <p><strong>Age:</strong> {age}</p>
+                    <p>
+                        <strong>Username: </strong>
+                        <span data-cy="submitted-username">{formData.username}</span>
+                    </p>
+                    <p>
+                        <strong>Email: </strong>
+                        <span data-cy="submitted-email">{formData.email}</span>
+                    </p>
+                    <p>
+                        <strong>Date of Birth: </strong>
+                        <span data-cy="submitted-dob">{formData.dob}</span>
+                    </p>
+                    <p>
+                        <strong>Age: </strong>
+                        <span data-cy="age">{age}</span>
+                    </p>
                 </div>
             )}
         </>

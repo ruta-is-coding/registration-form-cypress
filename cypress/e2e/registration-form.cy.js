@@ -28,27 +28,82 @@ describe('Registration form display', () => {
   })
 })
 
-describe("Registration form functionality", () => {
-  it("submits form with correct data and sees submitted information field with username, email, date of birth age age fields", () => {
-    // Visitor goes to the page
-    cy.visit('http://localhost:5173/')
+describe("Registration form functionality after correct data submission", () => {
 
-    // Fills the form
-    cy.get('[data-cy="username"]').type("marius")
-    cy.get('[data-cy="email"]').type("marius@gmail.com")
-    cy.get('[data-cy="password"]').type("mariuxas")
-    cy.get('[data-cy="date-of-birth"]').type('1995-05-30')
+  let correctUsername = "marius"
+  let correctEmail = "marius@gmail.com"
+  let correctPassword = "mariuxas"
+  let correctDob = "1995-05-30"
 
-    // Presses the button
-    cy.get('[data-cy="submit"]').click()
+  it("displays a field with username, email, date of birth and age labels", () => {
+    cy.fillAndSubmitForm(correctUsername, correctEmail, correctPassword, correctDob);
 
-    //Sees submitted information field
     cy.get('[data-cy="submitted-info"]').should("be.visible")
       .within(() => {
         cy.contains("Username:").should("be.visible")
         cy.contains("Email:").should("be.visible")
         cy.contains("Date of Birth:").should("be.visible")
         cy.contains("Age:").should("be.visible")
+
+        cy.get('[data-cy="submitted-username"]').should("be.visible")
+        cy.get('[data-cy="submitted-email"]').should("be.visible")
+        cy.get('[data-cy="submitted-dob"]').should("be.visible")
+        cy.get('[data-cy="age"]').should("be.visible")
       });
   })
+
+  it("displays submitted username, email and date of birth", () => {
+    cy.fillAndSubmitForm(correctUsername, correctEmail, correctPassword, correctDob);
+
+    cy.get('[data-cy="submitted-username"]').should("have.text", correctUsername)
+    cy.get('[data-cy="submitted-email"]').should("have.text", correctEmail)
+    cy.get('[data-cy="submitted-dob"]').should("have.text", correctDob)
+  })
+
+  it("displays the correct age", () => {
+    cy.fillAndSubmitForm(correctUsername, correctEmail, correctPassword, correctDob);
+
+    cy.calculateAge(correctDob).then(correctAge => {
+      cy.get('[data-cy="age"]').should("have.text", correctAge.toString());
+    });
+  })
+})
+
+describe("Validation after incorrect data submission", () => {
+  let correctUsername = "marius"
+  let correctEmail = "marius@gmail.com"
+  let correctPassword = "mariuxas"
+  let correctDob = "1995-05-30"
+
+  it("Displays an error message 'Username is required' if username is empty", () => {
+    cy.fillAndSubmitForm('', correctEmail, correctPassword, correctDob);
+    cy.contains("Username is required").should("be.visible")
+  })
+
+  it("Displays an error message 'Email is required' if email is empty", () => {
+    cy.fillAndSubmitForm(correctUsername, '', correctPassword, correctDob);
+    cy.contains("Email is required").should("be.visible")
+  })
+
+  it("Displays an error message 'Email is invalid' if email has an incorrect format", () => {
+    cy.fillAndSubmitForm(correctUsername, 'abc', correctPassword, correctDob);
+    cy.contains("Email is invalid").should("be.visible")
+  })
+
+  it("Displays an error message 'Password is required' if password is empty", () => {
+    cy.fillAndSubmitForm(correctUsername, correctEmail, '', correctDob);
+    cy.contains("Password is required").should("be.visible")
+  })
+
+  it("Displays an error message 'Password must be at least 6 characters' if password shorter than 6 characters", () => {
+    cy.fillAndSubmitForm(correctUsername, correctEmail, 'abc', correctDob);
+    cy.contains("Password must be at least 6 characters").should("be.visible")
+  })
+
+  it("Displays an error message 'Date of birth is required' if date of birth is empty", () => {
+    cy.fillAndSubmitForm(correctUsername, correctEmail, correctPassword, '');
+    cy.contains("Date of Birth is required").should("be.visible")
+  })
+
+  //Invalid date
 })
