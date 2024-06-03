@@ -9,7 +9,8 @@
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "test": "cypress open",
-    "cypress": "concurrently \"vite\" \"cypress open\""
+    "cypress": "concurrently \"vite\" \"cypress open\"",
+    "cypress:ci": "cypress run --browser chrome"
   },
   "dependencies": {
     "@popperjs/core": "^2.11.8",
