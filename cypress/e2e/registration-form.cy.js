@@ -33,7 +33,7 @@ describe("Registration form functionality after correct data submission", () => 
   let correctUsername = "marius"
   let correctEmail = "marius@gmail.com"
   let correctPassword = "mariuxas"
-  let correctDob = "1995-05-30"
+  let correctDob = "1996-06-07"
 
   it("displays a field with username, email, date of birth and age labels", () => {
     cy.fillAndSubmitForm(correctUsername, correctEmail, correctPassword, correctDob);
@@ -62,10 +62,7 @@ describe("Registration form functionality after correct data submission", () => 
 
   it("displays the correct age", () => {
     cy.fillAndSubmitForm(correctUsername, correctEmail, correctPassword, correctDob);
-
-    cy.calculateAge(correctDob).then(correctAge => {
-      cy.get('[data-cy="age"]').should("have.text", correctAge.toString());
-    });
+    cy.get('[data-cy="age"]').should("have.text", 27);
   })
 })
 

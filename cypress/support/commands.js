@@ -19,17 +19,3 @@ Cypress.Commands.add('fillAndSubmitForm', (username = '', email = '', password =
 
     cy.get('[data-cy="submit"]').click()
 })
-
-Cypress.Commands.add('calculateAge', (dobString) => {
-    const dateOfBirth = new Date(dobString);
-    let currentDate = new Date();
-
-    let age = currentDate.getFullYear() - dateOfBirth.getFullYear();
-    let monthDiff = currentDate.getMonth() - dateOfBirth.getMonth();
-
-    if (monthDiff < 0 || (monthDiff === 0 && currentDate.getDate() < dateOfBirth.getDate())) {
-        age--;
-    }
-
-    return age;
-})
