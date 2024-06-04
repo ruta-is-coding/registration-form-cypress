@@ -70,7 +70,7 @@ const RegistrationForm = () => {
         const formErrors = validate();
         setErrors(formErrors);
         if (Object.keys(formErrors).length === 0) {
-            setAge(calculateAge(formData.dob));
+            // setAge(calculateAge(formData.dob));
             setSubmitted(true);
         }
     };
